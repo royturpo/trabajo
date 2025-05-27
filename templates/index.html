@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aplicaciones de Métodos Numéricos</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        margin: 0;
+        padding: 0;
+        color: #2c3e50;
+      }
+
+      .container {
+        background-color: rgba(255, 255, 255, 0.92);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        margin-top: 40px;
+        margin-bottom: 40px;
+      }
+
+      h1 {
+        font-weight: 700;
+        color: #34495e;
+        margin-bottom: 40px;
+      }
+
+      label {
+        font-weight: 600;
+      }
+
+      .btn-primary {
+        background: #0056b3;
+        border: none;
+      }
+      .btn-primary:hover {
+        background: #003d80;
+      }
+      .btn-success {
+        background: #198754;
+        border: none;
+      }
+      .btn-success:hover {
+        background: #145c32;
+      }
+      footer {
+        text-align: center;
+        padding: 15px 0;
+        margin-top: 40px;
+        color: #6c757d;
+      }
+
+      .card {
+        border-radius: 15px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+
+        
+
+        <h1 class="text-center">Aplicaciones de Métodos Numéricos</h1>
+
+        <!-- Mensajes de alerta -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="mb-4">
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Cerrar"
+                  ></button>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <div class="row g-4">
+            <!-- Eliminación de Gauss -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <h3 class="mb-4 text-primary">Método de Eliminación de Gauss</h3>
+                    <form method="post" novalidate>
+                        <div class="mb-3">
+                            <label for="matrix_a" class="form-label">Matriz A</label>
+                            <textarea
+                                class="form-control"
+                                id="matrix_a"
+                                name="matrix_a"
+                                rows="5"
+                                required
+                            >2 1 -1
+-3 -1 2
+-2 1 2</textarea>
+                            <div class="form-text">
+                                Escribe filas separadas por líneas y números separados por espacios.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vector_b" class="form-label">Vector b</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="vector_b"
+                                name="vector_b"
+                                placeholder="Ejemplo: 8 -11 -3"
+                                value="8 -11 -3"
+                                required
+                            />
+                            <div class="form-text">Elementos separados por espacios.</div>
+                        </div>
+                        <button type="submit" name="solve_gauss" class="btn btn-primary w-100">
+                            Resolver con Gauss
+                        </button>
+                    </form>
+                    {% if gauss_used and gauss_result %}
+                        <div class="alert alert-success mt-4" role="alert">
+                            {{ gauss_result }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Regresión Lineal -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <h3 class="mb-4 text-success">Regresión Lineal (Mínimos Cuadrados)</h3>
+                    <form method="post" novalidate>
+                        <div class="mb-3">
+                            <label for="x_points" class="form-label">Puntos x</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="x_points"
+                                name="x_points"
+                                placeholder="Ejemplo: 1 2 3 4 5"
+                                value="1 2 3 4 5"
+                                required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="y_points" class="form-label">Puntos y</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="y_points"
+                                name="y_points"
+                                placeholder="Ejemplo: 2 4 5 4 5"
+                                value="2 4 5 4 5"
+                                required
+                            />
+                        </div>
+                        <button type="submit" name="calculate_regression" class="btn btn-success w-100">
+                            Calcular Regresión
+                        </button>
+                    </form>
+                    {% if regression_used and regression_result %}
+                        <div class="alert alert-success mt-4" role="alert">
+                            {{ regression_result }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+      <small>Aplicación creada por ChatGPT • 2025</small>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
